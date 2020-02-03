@@ -32,15 +32,31 @@ import Web3 from 'web3';
 class App extends Component {
   state = {blockNumber: 0}
   async componentDidMount() {
+  // this.setState({blockNumber: await connect()})
   this.connect()
   }
-
-
   connect = () => {
-    const web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ws.nexty.io"));
+    const web3 = new Web3(new Web3.providers.WebsocketProvider("ws://ws.nexty.io"));
+    // var a = web3.eth.getBalance("0x045bfe22453a9ca06aff4bdc5d7f5870eba121bd")
+    // console.log(a);
+
+
+    // web3.eth.subscribe("newBlockHeaders", async (error, event) => {
+    //   if (!error) {
+    //     var blockNumber = event.number;
+    //     console.log(event.number);
+    //     this.setState({
+    //       blockNumber: event.number
+    //     })
+    //     return event.number;
+    //   }
+    //   console.log(error, "loi");
+    //   return blockNumber;
+    //   });
+
       var subscription = web3.eth.subscribe('logs', {
-        address: '0x57AaeF34Ea26b7dD3E1d9b1EE6C251FD464246B9',
-        topics: ['0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c']
+        address: '0xbFC7889c6e2FF3d026f15752aaB47440d5FaA6eE',
+        topics: ['0xa8126f7572bb1fdeae5b5aa9ec126438b91f658a07873f009d041ae690f3a193']
     }, function(error, result){
         if (!error)
             console.log(result);
@@ -52,12 +68,10 @@ class App extends Component {
             console.log('Successfully unsubscribed!');
     });
 
-    // end event
     web3._provider.on('end', (eventObj) => {
       console.log(eventObj);
     })
   }
-  
 
   render() {
       return (
@@ -65,6 +79,8 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
+            {/* {this.state.blockNumber} */}
+            {}
           </p>
         </header>
       </div>
