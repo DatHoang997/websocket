@@ -37,19 +37,11 @@ class App extends Component {
                     .replace(/=>/g, '') 
                     .trim(); 
                     var start = str.indexOf("(") + 1; 
-      
-                    // End parameter names is just before last ')' 
                     var end = str.length - 1; 
-                  
                     var result = str.substring(start, end).split(", "); 
-                  
                     var params = []; 
-                  
                     result.forEach(element => { 
-                          
-                        // Removing any default value 
                       element = element.replace(/=[\s\S]*/g, '').trim(); 
-                  
                       if(element.length > 0) 
                         params.push(element); 
                     }); 
@@ -85,8 +77,7 @@ class App extends Component {
                     if (item.count === '5') {
                       var decode4 = web3.eth.abi.decodeParameters([para1, para2, para3, para4, para5], para);
                       console.log(item.function, decode4);
-                    }
-                                     
+                    }                                    
                   } else {
                   }
                 // }
@@ -96,13 +87,6 @@ class App extends Component {
         })
       }
     });
-  }
-
-  renderItem = () => {
-    // let {items} = this.state;
-    // return items.map((item) => {
-    //     console.log(item);
-    // });
   }
 
   render() {
