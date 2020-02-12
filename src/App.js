@@ -54,7 +54,6 @@ class App extends Component {
         
         
     // })
-      
 
 
     let {items} = this.state;
@@ -72,26 +71,36 @@ class App extends Component {
                       
                       web3.eth.getTransactionReceipt(e.hash, function(err, receipt) {
                         if (!err && receipt.logs[0]!== undefined) {
+                          // console.log(receipt)
                           events.forEach ((event) => {
-                            if(event.code === receipt.logs[0].topics[0]) {
-                              console.log(receipt.logs[0].data)
-                              console.log(receipt.logs[0].topics)
-                              console.log(event.event, receipt.blockNumber)
-                              let eventparam = web3.eth.abi.decodeLog([{
-                                type: 'address',
-                                name: 'from',
-                                indexed: true
-                            },{
-                                type: 'address',
-                                name: 'to',
-                                indexed: true
-                            },{
-                                type: 'uint256',
-                                name: 'value',
-                            }],
-                            receipt.logs[0].data,
-                            receipt.logs[0].topics);
-                            console.log(eventparam)
+                            for (let n = 0; n <= receipt.logs.length-1; n++) {
+                              if(event.code === receipt.logs[n].topics[0]) {
+                                console.log(event.event, receipt.blockNumber)
+                                let q = event.event.indexOf('(')
+                                let w = event.event.slice(0,q+1)
+                                let eventparam = web3.eth.abi.decodeLog(
+                                  event.inputs,
+                                  receipt.logs[n].data,
+                                  receipt.logs[n].topics);
+                                if(event.inputs.length === 0) {
+                                  console.log(event.event)
+                                }
+                                if(event.inputs.length === 1) {
+                                  console.log(w + eventparam['0'] + ')')
+                                }
+                                if(event.inputs.length === 2) {
+                                  console.log(w + eventparam['0'] + ' ' + eventparam['1'] + ')')
+                                }
+                                if(event.inputs.length === 3) {
+                                  console.log(w + eventparam['0'] + ' ' + eventparam['1'] + ' ' + eventparam['2'] + ')')
+                                }
+                                if(event.inputs.length === 4) {
+                                  console.log(w + eventparam['0'] + ' ' + eventparam['1'] + ' ' + eventparam['2']+ ' ' + eventparam['3'] + ')')
+                                }
+                                if(event.inputs.length === 5) {
+                                  console.log(w + eventparam['0'] + ' ' + eventparam['1'] + ' ' + eventparam['2']+ ' ' + eventparam['3']+ ' ' + eventparam['4'] + ')')
+                                }
+                              }
                             }
                           
 
@@ -112,7 +121,7 @@ class App extends Component {
                         let count = parameters.length
                         let a = item.function.indexOf('(')
                         let b = item.function.slice(0,a+1)
-                        console.log(e)
+                        // console.log(e)
                         if (count === 0) {
                           console.log(e.from, item.function, e.blockNumber)
                         }
