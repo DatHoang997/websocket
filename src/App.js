@@ -3,12 +3,15 @@ import logo from './logo.svg';
 import './App.css';
 import Web3 from 'web3';
 import Items from './mockdata/Items';
+import Events from './mockdata/Events';
+
 
 class App extends Component {
   constructor(props) {    
     super(props);
     this.state = {
-        items: Items
+        items: Items,
+        events: Events
     }
   }
 
@@ -30,6 +33,30 @@ class App extends Component {
 //     console.log(events) // same results as the optional callback above
 // });
 
+    let {events} = this.state;
+    
+    
+    //   var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+    //   var argument_names = /([^\s,]+)/g;
+    //   var name = "amount"
+
+    //   var eventStr = event.event.replace(strip_comments, '');
+    //   var eventparam = eventStr.slice(eventStr.indexOf('(')+1, eventStr.indexOf(')')).match(argument_names);
+    //   if(eventparam === null)
+    //     eventparam = [];
+    //     let event1 = eventparam[0];
+    //     let event2 = eventparam[1];
+    //     let event3 = eventparam[2];
+    //     let event4 = eventparam[3];
+    //     let event5 = eventparam[4];
+    //     let count1 = eventparam.length;
+    //     console.log(count1)
+        
+        
+    // })
+      
+
+
     let {items} = this.state;
     for (var i = startBlockNumber; i <= endBlockNumber; i++) {
       web3.eth.getBlock(i, true, function(error, result){
@@ -42,66 +69,84 @@ class App extends Component {
                   let para = '0x' + e.input.slice(11);
                   // if (accAddress === e.from || accAddress === e.to) {
                     if (id !== "0x" && id === item.id) {
-                      console.log(e)
+                      
                       web3.eth.getTransactionReceipt(e.hash, function(err, receipt) {
                         if (!err && receipt.logs[0]!== undefined) {
-                          // console.log(receipt.logs[2].data, receipt.blockNumber)
-                          console.log(receipt)
-                          // for (var j = 0; j<=receipt.logs.length-1; j++) {
-                          //   // console.log(receipt.logs[2].topics)
-                          //   var lo = web3.eth.abi.decodeLog([{"name": "_id", "type": "bytes32"}], receipt.logs[j].data, [receipt.logs[j].topics]);
-                          //   console.log('log' + j, ":" + ' ' + lo['0'])
-                          // }
+                          events.forEach ((event) => {
+                            if(event.code === receipt.logs[0].topics[0]) {
+                              console.log(receipt.logs[0].data)
+                              console.log(receipt.logs[0].topics)
+                              console.log(event.event, receipt.blockNumber)
+                              let eventparam = web3.eth.abi.decodeLog([{
+                                type: 'address',
+                                name: 'from',
+                                indexed: true
+                            },{
+                                type: 'address',
+                                name: 'to',
+                                indexed: true
+                            },{
+                                type: 'uint256',
+                                name: 'value',
+                            }],
+                            receipt.logs[0].data,
+                            receipt.logs[0].topics);
+                            console.log(eventparam)
+                            }
+                          
+
+                          })
                         }
                       })
                       var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
                       var argument_names = /([^\s,]+)/g;
-
                       var fnStr = item.function.replace(strip_comments, '');
                       var parameters = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(argument_names);
-                      if(parameters === null)
-                      parameters = [];
-                      let para1 = parameters[0];
-                      let para2 = parameters[1];
-                      let para3 = parameters[2];
-                      let para4 = parameters[3];
-                      let para5 = parameters[4];
-                      let count = parameters.length
-                      let a = item.function.indexOf('(')
-                      let b = item.function.slice(0,a+1)
-                      if (count === 0) {
-                        console.log(e.from, item.function)
-                      }
-                      if (count === 1) {
-                        var decode = web3.eth.abi.decodeParameters([para1], para);
-                        // if(e.to === "0x0000000000000000000000000000000000023456") {
-                          console.log('dev '+ b + decode["0"]+')');
-                        // } 
-                      }
-                      if (count === 2) {
-                        var decode1 = web3.eth.abi.decodeParameters([para1, para2], para);
-                        // if(e.to === "0x0000000000000000000000000000000000023456") {
-                          console.log('dev '+ b + decode1["0"]+', '+decode1["1"]+')');
-                        // } 
-                      }
-                      if (count === 3) {
-                        var decode2 = web3.eth.abi.decodeParameters([para1, para2, para3], para);
-                        // if(e.to === "0x0000000000000000000000000000000000023456") {
-                          console.log('dev '+ b + decode2["0"]+', '+decode2["1"]+', '+decode2["2"]+')');
-                        // }                     
-                      }
-                      if (count === 4) {
-                        var decode3 = web3.eth.abi.decodeParameters([para1, para2, para3, para4], para);
-                        // if(e.to === "0x0000000000000000000000000000000000023456") {
-                          console.log('dev '+ b + decode3["0"]+', '+decode3["1"]+', '+decode3["2"]+', '+decode3["3"]+')');
-                        // }                     
-                      }
-                      if (count === 5) {
-                        var decode4 = web3.eth.abi.decodeParameters([para1, para2, para3, para4, para5], para);
-                        // if(e.to === "0x0000000000000000000000000000000000023456") {
-                          console.log('dev '+ b + decode4["0"]+', '+decode4["1"]+', '+decode4["2"]+', '+decode4["3"]+', '+decode4["4"]+')');
-                        // }                     
-                      }                                    
+                      if(parameters === null) 
+                        parameters = [];
+                        let para1 = parameters[0];
+                        let para2 = parameters[1];
+                        let para3 = parameters[2];
+                        let para4 = parameters[3];
+                        let para5 = parameters[4];
+                        let count = parameters.length
+                        let a = item.function.indexOf('(')
+                        let b = item.function.slice(0,a+1)
+                        console.log(e)
+                        if (count === 0) {
+                          console.log(e.from, item.function, e.blockNumber)
+                        }
+                        if (count === 1) {
+                          var decode = web3.eth.abi.decodeParameters([para1], para);
+                          // if(e.to === "0x0000000000000000000000000000000000023456") {
+                            console.log('dev '+ b + decode["0"]+')', e.blockNumber);
+                          // } 
+                        }
+                        if (count === 2) {
+                          var decode1 = web3.eth.abi.decodeParameters([para1, para2], para);
+                          // if(e.to === "0x0000000000000000000000000000000000023456") {
+                            console.log('dev '+ b + decode1["0"]+', '+decode1["1"]+')', e.blockNumber);
+                          // } 
+                        }
+                        if (count === 3) {
+                          var decode2 = web3.eth.abi.decodeParameters([para1, para2, para3], para);
+                          // if(e.to === "0x0000000000000000000000000000000000023456") {
+                            console.log('dev '+ b + decode2["0"]+', '+decode2["1"]+', '+decode2["2"]+')', e.blockNumber);
+                          // }                     
+                        }
+                        if (count === 4) {
+                          var decode3 = web3.eth.abi.decodeParameters([para1, para2, para3, para4], para);
+                          // if(e.to === "0x0000000000000000000000000000000000023456") {
+                            console.log('dev '+ b + decode3["0"]+', '+decode3["1"]+', '+decode3["2"]+', '+decode3["3"]+')', e.blockNumber);
+                          // }                     
+                        }
+                        if (count === 5) {
+                          var decode4 = web3.eth.abi.decodeParameters([para1, para2, para3, para4, para5], para);
+                          // if(e.to === "0x0000000000000000000000000000000000023456") {
+                            console.log('dev '+ b + decode4["0"]+', '+decode4["1"]+', '+decode4["2"]+', '+decode4["3"]+', '+decode4["4"]+')', e.blockNumber);
+                          // }                     
+                        } 
+                                                        
                     } else {
                   }
                 // }
