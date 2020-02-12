@@ -41,7 +41,7 @@ class App extends Component {
                           events.forEach ((event) => {
                             for (let n = 0; n <= receipt.logs.length-1; n++) {
                               if(event.code === receipt.logs[n].topics[0]) {
-                                console.log(event.event, receipt.blockNumber)
+                                // console.log(event.event, receipt.blockNumber)
                                 let q = event.event.indexOf('(')
                                 let w = event.event.slice(0,q+1)
                                 let eventparam = web3.eth.abi.decodeLog(
@@ -49,22 +49,22 @@ class App extends Component {
                                   receipt.logs[n].data,
                                   receipt.logs[n].topics)
                                 if(event.inputs.length === 0) {
-                                  console.log('event ' + event.event)
+                                  console.log('event ' + event.event, receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 1) {
-                                  console.log('event ' + w + eventparam['0'] + ')')
+                                  console.log('event ' + w + eventparam['0'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 2) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ')')
+                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 3) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2'] + ')')
+                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 4) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3'] + ')')
+                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 5) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3']+ ', ' + eventparam['4'] + ')')
+                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3']+ ', ' + eventparam['4'] + ')', receipt.blockNumber)
                                 }
                               }
                             }
