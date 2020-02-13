@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Web3 from 'web3';
-import Items from './mockdata/Items';
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import Web3 from 'web3'
+import Items from './mockdata/Items'
+import Events from './mockdata/Events'
 
 class App extends Component {
   constructor(props) {    
     super(props);
     this.state = {
-        items: Items
+        items: Items,
+        events: Events,
     }
   }
 
@@ -19,7 +21,7 @@ class App extends Component {
   connect = async (accAddress, startBlockNumber, endBlockNumber) => {
     const web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ws.nexty.io"));
 
-
+    let {events} = this.state
     let {items} = this.state;
     for (var i = startBlockNumber; i <= endBlockNumber; i++) {
       web3.eth.getBlock(i, true, function(error, result){
@@ -32,18 +34,47 @@ class App extends Component {
                   let para = '0x' + e.input.slice(11);
                   // if (accAddress === e.from || accAddress === e.to) {
                     if (id !== "0x" && id === item.id) {
-                      console.log(e,e.blockNumber)
+                      
                       web3.eth.getTransactionReceipt(e.hash, function(err, receipt) {
                         if (!err && receipt.logs!== undefined&& receipt.logs!== null) {
                           // console.log(receipt.logs[2].data, receipt.blockNumber)
+                          // console.log(e,e.blockNumber)
                           
-                          // for (var j = 0; j<=receipt.logs.length-1; j++) {
-                          //   // console.log(receipt.logs[2].topics)
-                          //   var lo = web3.eth.abi.decodeLog([{"name": "_id", "type": "bytes32"}], receipt.logs[j].data, [receipt.logs[j].topics]);
-                          //   console.log('log' + j, ":" + ' ' + lo['0'])
-                          // }
-                        }
-                      })
+
+
+                          if (!err && receipt.logs!== undefined && receipt.logs!== null) {
+                            
+                            events.forEach ((event) => {
+                              for (let n = 0; n <= receipt.logs.length-1; n++) {
+                                
+                                if(event.code === receipt.logs[n].topics[0]) {
+                                  
+                                  let q = event.event.indexOf('(')
+                                  let w = event.event.slice(0,q+1)
+                                  let eventparam = web3.eth.abi.decodeLog(
+                                    event.inputs,
+                                    receipt.logs[n].data,
+                                    receipt.logs[n].topics)
+                                  if(event.inputs.length === 0) {
+                                    console.log('event ' + event.event, receipt.blockNumber)
+                                  }
+                                  if(event.inputs.length === 1) {
+                                    console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ')', receipt.blockNumber)
+                                  }
+                                  if(event.inputs.length === 2) {
+                                    console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ')', receipt.blockNumber)
+                                  }
+                                  if(event.inputs.length === 3) {
+                                    console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ')', receipt.blockNumber)
+                                  }
+                                  if(event.inputs.length === 4) {
+                                    console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ', ' + event.inputs['3'].name + ': ' + eventparam['3'] + ')', receipt.blockNumber)
+                                  }
+                                  if(event.inputs.length === 5) {
+                                    console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ', ' + event.inputs['3'].name + ': ' + eventparam['3'] + ', ' + event.inputs['4'].name + ': ' + eventparam['4'] + ')', receipt.blockNumber)
+                                  }
+                                }}})}
+                       
                       var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
                       var argument_names = /([^\s,]+)/g;
 
@@ -91,9 +122,10 @@ class App extends Component {
                         // if(e.to === "0x0000000000000000000000000000000000023456") {
                           console.log('dev '+ b + decode4["0"]+', '+decode4["1"]+', '+decode4["2"]+', '+decode4["3"]+', '+decode4["4"]+')',e.blockNumber);
                         // }                     
-                      }                                    
-                    } else {
-                  }
+                      } 
+                    }
+                  })                                   
+                    }
                 // }
               })
             });
