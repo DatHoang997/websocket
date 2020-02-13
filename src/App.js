@@ -19,17 +19,6 @@ class App extends Component {
   connect = async (accAddress, startBlockNumber, endBlockNumber) => {
     const web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ws.nexty.io"));
 
-//         var myContract = new web3.eth.Contract([], '0x0000000000000000000000000000000000034567', {
-//       from: '0x36fdba7f8b274ee773970c9bb0c16c44d7b3e669'
-//   });
-//   myContract.getPastEvents("allEvents", {
-//     fromBlock: 28588311,
-//     toBlock: 28588311,
-// }, function(error, events){ console.log(events); })
-// .then(function(events){
-//     console.log(events) // same results as the optional callback above
-// });
-
     let {items} = this.state;
     for (var i = startBlockNumber; i <= endBlockNumber; i++) {
       web3.eth.getBlock(i, true, function(error, result){
@@ -43,17 +32,6 @@ class App extends Component {
                   // if (accAddress === e.from || accAddress === e.to) {
                     if (id !== "0x" && id === item.id) {
                       console.log(e)
-                      web3.eth.getTransactionReceipt(e.hash, function(err, receipt) {
-                        if (!err && receipt.logs[0]!== undefined) {
-                          // console.log(receipt.logs[2].data, receipt.blockNumber)
-                          console.log(receipt)
-                          // for (var j = 0; j<=receipt.logs.length-1; j++) {
-                          //   // console.log(receipt.logs[2].topics)
-                          //   var lo = web3.eth.abi.decodeLog([{"name": "_id", "type": "bytes32"}], receipt.logs[j].data, [receipt.logs[j].topics]);
-                          //   console.log('log' + j, ":" + ' ' + lo['0'])
-                          // }
-                        }
-                      })
                       var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
                       var argument_names = /([^\s,]+)/g;
 
