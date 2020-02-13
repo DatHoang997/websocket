@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-  this.connect("0x61caAD7b6814f8D7B60bfa62dd2fC1f4d49c0872",28587311,28588311)
+  this.connect("0x61caAD7b6814f8D7B60bfa62dd2fC1f4d49c0872",28588311,28588311)
   }
 
   connect = async (accAddress, startBlockNumber, endBlockNumber) => {
@@ -73,7 +73,7 @@ class App extends Component {
                                   if(event.inputs.length === 5) {
                                     console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ', ' + event.inputs['3'].name + ': ' + eventparam['3'] + ', ' + event.inputs['4'].name + ': ' + eventparam['4'] + ')', receipt.blockNumber)
                                   }
-                                }}})}
+                                }}})
                        
                       var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
                       var argument_names = /([^\s,]+)/g;
@@ -122,7 +122,8 @@ class App extends Component {
                         // if(e.to === "0x0000000000000000000000000000000000023456") {
                           console.log('dev '+ b + decode4["0"]+', '+decode4["1"]+', '+decode4["2"]+', '+decode4["3"]+', '+decode4["4"]+')',e.blockNumber);
                         // }                     
-                      } 
+                      }
+                    } 
                     }
                   })                                   
                     }
