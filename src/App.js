@@ -11,20 +11,19 @@ class App extends Component {
     super(props)
     this.state = {
         items: Items,
-        events: Events
+        events: Events,
+        valueInput:""
     }
   }
-
-  async componentDidMount() {
-  this.connect("0x61caAD7b6814f8D7B60bfa62dd2fC1f4d49c0872",28707000,28709605)
-  }
-
-  connect = async (accAddress, startBlockNumber, endBlockNumber) => {
+  connect = () => {
+    let {valueInput} = this.state
     const web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ws.nexty.io"))
 
     let {events} = this.state
     let {items} = this.state
-    for (var i = startBlockNumber; i <= endBlockNumber; i++) {
+    //28588311
+    console.log(valueInput)
+    for (var i = valueInput-2000; i <= valueInput; i++) {
       web3.eth.getBlock(i, true, function(error, result){
         if (!error) {
           // console.log(result)
@@ -36,7 +35,7 @@ class App extends Component {
                   // if (accAddress === e.from || accAddress === e.to) {
                     if (id !== "0x" && id === item.id) {
                       web3.eth.getTransactionReceipt(e.hash, function(err, receipt) {
-                        if (!err && receipt.logs[0]!== undefined) {
+                        if (!err && receipt.logs!== undefined && receipt.logs!== null) {
                           // console.log(receipt)
                           events.forEach ((event) => {
                             for (let n = 0; n <= receipt.logs.length-1; n++) {
@@ -52,25 +51,20 @@ class App extends Component {
                                   console.log('event ' + event.event, receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 1) {
-                                  console.log('event ' + w + eventparam['0'] + ')', receipt.blockNumber)
+                                  console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 2) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ')', receipt.blockNumber)
+                                  console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 3) {
                                   console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 4) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3'] + ')', receipt.blockNumber)
+                                  console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ', ' + event.inputs['3'].name + ': ' + eventparam['3'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 5) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3']+ ', ' + eventparam['4'] + ')', receipt.blockNumber)
+                                  console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ', ' + event.inputs['3'].name + ': ' + eventparam['3'] + ', ' + event.inputs['4'].name + ': ' + eventparam['4'] + ')', receipt.blockNumber)
                                 }
-                              }
-                            }
-                          })
-                        }
-                      })
                       var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
                       var argument_names = /([^\s,]+)/g
                       var fnStr = item.function.replace(strip_comments, '')
@@ -88,39 +82,49 @@ class App extends Component {
                         // console.log(e)
                         if (count === 0) {
                           console.log(e.from, item.function, e.blockNumber)
+                          console.log('')
                         }
                         if (count === 1) {
                           var decode = web3.eth.abi.decodeParameters([para1], para)
                           // if(e.to === "0x0000000000000000000000000000000000023456") {
-                            console.log('dev '+ b + decode["0"]+')', e.blockNumber)
+                            console.log('dex '+ b + para1 + ': ' + decode["0"]+')', e.blockNumber)
+                            console.log('')
                           // } 
                         }
                         if (count === 2) {
                           var decode1 = web3.eth.abi.decodeParameters([para1, para2], para)
                           // if(e.to === "0x0000000000000000000000000000000000023456") {
-                            console.log('dev '+ b + decode1["0"]+', '+decode1["1"]+')', e.blockNumber)
+                            console.log('dex '+ b + para1 + ': ' + decode1["0"]+', ' +  para2 + ': ' + decode1["1"]+')', e.blockNumber)
+                            console.log('')
                           // } 
                         }
                         if (count === 3) {
                           var decode2 = web3.eth.abi.decodeParameters([para1, para2, para3], para)
                           // if(e.to === "0x0000000000000000000000000000000000023456") {
-                            console.log('dev '+ b + decode2["0"]+', '+decode2["1"]+', '+decode2["2"]+')', e.blockNumber)
+                            console.log('dex '+ b + para1 + ': ' + decode2["0"]+', '+ para2 + ': ' + decode2["1"]+', '+ para3 + ': ' + decode2["2"]+')', e.blockNumber)
+                            console.log('')
                           // }                     
                         }
                         if (count === 4) {
                           var decode3 = web3.eth.abi.decodeParameters([para1, para2, para3, para4], para)
                           // if(e.to === "0x0000000000000000000000000000000000023456") {
-                            console.log('dev '+ b + decode3["0"]+', '+decode3["1"]+', '+decode3["2"]+', '+decode3["3"]+')', e.blockNumber)
+                            console.log('dex '+ b + para1 + ': ' + decode3["0"]+', '+ para2 + ': ' + decode3["1"]+', '+ para3+ ': ' + decode3["2"]+', '+ para5 + ': ' + decode3["3"]+')', e.blockNumber)
+                            console.log('')
                           // }                     
                         }
                         if (count === 5) {
                           var decode4 = web3.eth.abi.decodeParameters([para1, para2, para3, para4, para5], para)
                           // if(e.to === "0x0000000000000000000000000000000000023456") {
-                            console.log('dev '+ b + decode4["0"]+', '+decode4["1"]+', '+decode4["2"]+', '+decode4["3"]+', '+decode4["4"]+')', e.blockNumber)
+                            console.log('dex '+ b + para1 + ': ' + decode4["0"]+', '+ para2 + ': ' + decode4["1"]+', '+ para3+ ': ' + decode4["2"]+', '+ para4 + ': ' + decode4["3"]+', '+ para5 + ': ' + decode4["4"]+')', e.blockNumber)
+                            console.log('')
                           // }                     
-                        }                           
-                    } else {
-                  }
+                        }
+                              }
+                            }
+                          })
+                        }
+                      })
+                    }
                 // }
               })
             })
@@ -130,13 +134,27 @@ class App extends Component {
     }
   }
 
+  _onchange=evt=>{
+    this.setState({valueInput:evt.target.value})
+  }
+  _handleKeyDown=evt=>{
+    if (evt.key === 'Enter') {
+      this.setState({valueInput:evt.target.value},()=>{
+        this.connect()
+      })
+    }
+  }
+
+
   render() {
       return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            {}
+            <label>Block Number: 28588311</label><br></br>
+            <input type="number" id="input"  onChange={this._onchange} onKeyDown={this._handleKeyDown}/><br></br>
+            <button type="submit" onClick={this.connect}>Button</button>
           </p>
         </header>
       </div>

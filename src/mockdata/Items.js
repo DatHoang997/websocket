@@ -31,10 +31,10 @@ const Items = [
     id: "4ea09797",
     function: "next(bool,bytes32)",
   },
-  // {
-  //   id: "be91d729",
-  //   function: "onBlockInitialized(uint256)",
-  // },
+  {
+    id: "be91d729",
+    function: "onBlockInitialized(uint256)",
+  },
   {
     id: "0d90b10a",
     function: "prev(bool,bytes32)",
