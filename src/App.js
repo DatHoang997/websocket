@@ -16,7 +16,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-  this.connect("0x61caAD7b6814f8D7B60bfa62dd2fC1f4d49c0872",28707000,28707605)
+  this.connect("0x61caAD7b6814f8D7B60bfa62dd2fC1f4d49c0872",28707000,28709605)
   }
 
   connect = async (accAddress, startBlockNumber, endBlockNumber) => {
@@ -58,7 +58,7 @@ class App extends Component {
                                   console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 3) {
-                                  console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2'] + ')', receipt.blockNumber)
+                                  console.log('event ' + w + event.inputs['0'].name + ': ' + eventparam['0'] + ', ' + event.inputs['1'].name + ': ' + eventparam['1'] + ', ' + event.inputs['2'].name + ': ' + eventparam['2'] + ')', receipt.blockNumber)
                                 }
                                 if(event.inputs.length === 4) {
                                   console.log('event ' + w + eventparam['0'] + ', ' + eventparam['1'] + ', ' + eventparam['2']+ ', ' + eventparam['3'] + ')', receipt.blockNumber)
@@ -136,7 +136,6 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            {/* {this.state.blockNumber} */}
             {}
           </p>
         </header>

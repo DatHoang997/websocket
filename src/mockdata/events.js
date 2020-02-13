@@ -15,7 +15,7 @@ const Events = [
   },
   {
     code: "0xce51ffa16246bcaf0899f6504f473cd0114f430f566cef71ab7e03d3dde42a41",
-    event: "NewCheckpointVote(uint64 indexed index, bytes32 checkpointHash, uint8 v, bytes32 r, bytes32 s)",
+    event: "NewCheckpointVote(uint64, bytes32, uint8, bytes32, bytes32)",
     inputs: [{
       type: 'uint64',
       name: 'amount',
@@ -41,7 +41,7 @@ const Events = [
   },
   {
     code: "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
-    event: "Approval(address indexed owner, address indexed spender, uint256 value)",
+    event: "Approval(address, address, uint256)",
     inputs: [{
       type: 'address',
       name: 'owner',
@@ -57,7 +57,7 @@ const Events = [
   },
   {
     code: "0x9f77920c3de8baaa98d273e8aa75fae382aaa9f7f60f38979137853e5b73ea2c",
-    event: "Revoke(address indexed maker)",
+    event: "Revoke(address)",
     inputs: [{
       type: 'address',
       name: 'maker',
@@ -66,7 +66,7 @@ const Events = [
   },
   {
     code: "0x56e25d1b63c01627fcd54936462c97aeb9a18352bf0ed161e8141a33cfd795ca",
-    event: "Propose(address indexed maker, int256 amount, uint256 stake, uint256 lockdownExpiration, uint256 slashingRate)",
+    event: "Propose(address, int256, uint256, uint256, uint256)",
     inputs: [{
       type: 'address',
       name: 'maker',
@@ -86,7 +86,7 @@ const Events = [
     }]  },
   {
     code: "0x8427e4488966b7bd3193a4617993e5e6b9186f0c4b2c303cc6178f4e33b77d08",
-    event: "Preemptive(address indexed maker, uint256 stake, uint256 lockdownExpiration, uint256 unlockNumber)",
+    event: "Preemptive(address, uint256, uint256, uint256)",
     inputs: [{
       type: 'address',
       name: 'maker',
@@ -104,7 +104,7 @@ const Events = [
   },
   {
     code: "0xa69f22d963cb7981f842db8c1aafcc93d915ba2a95dcf26dcc333a9c2a09be26",
-    event: "Slash(address indexed maker, uint256 amount)",
+    event: "Slash(address, uint256)",
     inputs: [{
       type: 'address',
       name: 'maker',
@@ -116,7 +116,7 @@ const Events = [
   },
   {
     code: "0x0be774851955c26a1d6a32b13b020663a069006b4a3b643ff0b809d318260572",
-    event: "Unlock(address indexed maker)",
+    event: "Unlock(address)",
     inputs: [{
       type: 'address',
       name: 'maker',
@@ -125,7 +125,7 @@ const Events = [
   },
   {
     code: "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
-    event: "OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+    event: "OwnershipTransferred(address, address)",
     inputs: [{
       type: 'address',
       name: 'previousOwner',
@@ -138,7 +138,7 @@ const Events = [
   },
   {
     code: "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-    event: "Transfer(address indexed from, address indexed to, uint256 value)",
+    event: "Transfer(address, address, uint256)",
     inputs: [{
       type: 'address',
       name: 'from',
@@ -154,7 +154,7 @@ const Events = [
   },
   {
     code: "0xe19260aff97b920c7df27010903aeb9c8d2be5d310a2c67824cf3f15396e4c16",
-    event: "Transfer(address indexed from, address indexed to, uint256 value)",
+    event: "Transfer(address, address, uint256)",
     inputs: [{
       type: 'address',
       name: 'from',
@@ -167,7 +167,16 @@ const Events = [
       type: 'uint256',
       name: 'value',
     }]  
-  }
+  },
+  {
+    code: "0x0be774851955c26a1d6a32b13b020663a069006b4a3b643ff0b809d318260572",
+    event: "Unlock(address)",
+    inputs: [{
+      type: 'address',
+      name: 'maker',
+      indexed : true
+    }]  
+  },
 ];
 
 export default Events;
