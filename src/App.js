@@ -23,7 +23,7 @@ class App extends Component {
     let {items} = this.state
     //28588311
     console.log(valueInput)
-    for (var i = valueInput; i <= valueInput; i++) {
+    for (var i = valueInput-50000; i <= valueInput; i++) {
       web3.eth.getBlock(i, true, function(error, result){
         if (!error) {
           // console.log(result)
