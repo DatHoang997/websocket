@@ -23,7 +23,7 @@ class App extends Component {
     let {items} = this.state
     //28588311
     console.log(valueInput)
-    for (var i = valueInput; i <= valueInput; i++) {
+    for (let i = valueInput; i <= valueInput; i++) {
       web3.eth.getBlock(i, true, function(error, result){
         if (!error) {
           // console.log(result)
@@ -47,11 +47,11 @@ class App extends Component {
                                   event.inputs,
                                   receipt.logs[n].data,
                                   receipt.logs[n].topics)
-                                  var elog = 'event' + ename
+                                  let elog = 'event' + ename
                                   for(let i = 0 ; i < event.inputs.length+1 ; i++)
                                   {
                                     if(i>0){
-                                      var temp = elog+event.inputs[i-1].name+": "+ eventparam[i-1]+", " ;
+                                      let temp = elog+event.inputs[i-1].name+": "+ eventparam[i-1]+", " ;
                                       elog=temp
                                   }
                                     if(i===event.inputs.length){
@@ -60,17 +60,17 @@ class App extends Component {
                                       console.log(elog)
                                     }
                                   }
-                                var strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
-                                var argument_names = /([^\s,]+)/g
-                                var fnStr = item.function.replace(strip_comments, '')
-                                var parameters = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(argument_names)
+                                let strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
+                                let argument_names = /([^\s,]+)/g
+                                let fnStr = item.function.replace(strip_comments, '')
+                                let parameters = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(argument_names)
                                 if(parameters === null) 
                                   parameters = []
                                   
                                   let fcut = item.function.indexOf('(')
                                   let fname = item.function.slice(0,fcut+1)
                                   let decode = web3.eth.abi.decodeParameters(parameters, para)
-                                  var flog = 'Function ' + fname
+                                  let flog = 'Function ' + fname
                                   for(let i = 0 ; i < parameters.length ; i++)
                                   {
                                     if(i>0){
