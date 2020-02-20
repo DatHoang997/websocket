@@ -1,6 +1,4 @@
-import React, {
-  Component
-} from 'react'
+import React, {Component} from 'react'
 import logo from './logo.svg'
 import './App.css'
 import Web3 from 'web3'
@@ -27,7 +25,7 @@ class App extends Component {
     } = this.state
     //28588311
     console.log(valueInput)
-    for (let i = valueInput; i <= valueInput; i++) {
+    for (let i = valueInput - 5000; i <= valueInput; i++) {
       web3.eth.getBlock(i, true, function (error, result) {
         if (!error) {
           if (result != null && result.transactions != null) {
@@ -57,7 +55,7 @@ class App extends Component {
                               if (i === event.inputs.length) {
                                 elog = elog + ')'
                                 elog = elog.replace(', )', ')')
-                                console.log(elog)
+                                console.log(elog, n, e.blockNumber)
                               }
                             }
                             let strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
@@ -74,10 +72,10 @@ class App extends Component {
                               if (i > 0) {
                                 flog += parameters[i] + ': ' + decode[i] + ", ";
                               }
-                              if (i === event.inputs.length) {
+                              if (i === parameters.inputs.length) {
                                 flog = flog + ')'
                                 flog = flog.replace(', )', ')')
-                                console.log(flog)
+                                console.log(flog, n, e.blockNumber)
                               }
                             }
                           }
@@ -110,19 +108,19 @@ class App extends Component {
     }
   }
   render() {
-    return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    return ( 
+      <div className = "App" >
+        <header className = "App-header" >
+        <img src = {logo}className = "App-logo"alt = "logo" / >
         <p>
-          <label>Block Number: 28588311</label><br></br>
-          <input type="number" id="input"  onChange={this._onchange} onKeyDown={this._handleKeyDown}/><br></br>
-          <button type="submit" onClick={this.connect}>Button</button>
-        </p>
-      </header>
-    </div>
-  )
-}
+          <label > Block Number: 28588311 </label><br></br >
+          <input type = "number" id = "input"onChange = {this._onchange} onKeyDown = {this._handleKeyDown}/><br></br >
+          <button type = "submit" onClick = {this.connect}> Button </button>
+        </p> 
+        </header> 
+      </div>
+    )
+  }
 }
 
 export default App
