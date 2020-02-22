@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import logo from './logo.svg'
 import './App.css'
 import Web3 from 'web3'
-import Items from './mockdata/Items'
-import Events from './mockdata/Events'
+import Items from './mockdata/items'
+import Events from './mockdata/events'
 
 
 class App extends Component {
@@ -55,7 +55,7 @@ class App extends Component {
                               if (i === event.inputs.length) {
                                 elog = elog + ')'
                                 elog = elog.replace(', )', ')')
-                                console.log(elog, n, e.blockNumber)
+                                console.log(elog, e.blockNumber)
                               }
                             }
                             let strip_comments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
@@ -68,14 +68,15 @@ class App extends Component {
                             let fname = item.function.slice(0, fcut + 1)
                             let decode = web3.eth.abi.decodeParameters(parameters, para)
                             let flog = 'Function ' + fname
+                            
                             for (let i = 0; i < parameters.length; i++) {
                               if (i > 0) {
                                 flog += parameters[i] + ': ' + decode[i] + ", ";
                               }
-                              if (i === parameters.inputs.length) {
+                              if (i === parameters.length-1) {
                                 flog = flog + ')'
                                 flog = flog.replace(', )', ')')
-                                console.log(flog, n, e.blockNumber)
+                                console.log(flog, e.blockNumber)
                               }
                             }
                           }
