@@ -4,6 +4,7 @@ import './App.css'
 import Web3 from 'web3'
 import Items from './mockdata/items'
 import Events from './mockdata/events'
+import Accs from './mockdata/accs'
 
 
 class App extends Component {
@@ -12,6 +13,7 @@ class App extends Component {
     this.state = {
       items: Items,
       events: Events,
+      accs: Accs,
       valueInput: ""
     }
   }
@@ -21,11 +23,12 @@ class App extends Component {
     let {
       valueInput,
       events,
-      items
+      items,
+      accs
     } = this.state
     //28588311
     console.log(valueInput)
-    for (let i = valueInput - 5000; i <= valueInput; i++) {
+    for (let i = valueInput-5000; i <= valueInput; i++) {
       web3.eth.getBlock(i, true, function (error, result) {
         if (!error) {
           if (result != null && result.transactions != null) {
@@ -46,7 +49,7 @@ class App extends Component {
                               event.inputs,
                               receipt.logs[n].data,
                               receipt.logs[n].topics)
-                            let elog = 'event' + ename
+                            let elog = 'Event ' + ename
                             for (let i = 0; i < event.inputs.length + 1; i++) {
                               if (i > 0) {
                                 let temp = elog + event.inputs[i - 1].name + ": " + eventparam[i - 1] + ", ";
@@ -67,18 +70,22 @@ class App extends Component {
                             let fcut = item.function.indexOf('(')
                             let fname = item.function.slice(0, fcut + 1)
                             let decode = web3.eth.abi.decodeParameters(parameters, para)
-                            let flog = 'Function ' + fname
+                            accs.forEach((acc) => {
+                              if(acc.address === e.from ||acc.address === e.to) {
+                              let flog = 'Function ' + acc.name + ' ' + fname
                             
-                            for (let i = 0; i < parameters.length; i++) {
-                              if (i > 0) {
-                                flog += parameters[i] + ': ' + decode[i] + ", ";
-                              }
-                              if (i === parameters.length-1) {
-                                flog = flog + ')'
-                                flog = flog.replace(', )', ')')
-                                console.log(flog, e.blockNumber)
+                              for (let i = 0; i < parameters.length; i++) {
+                                if (i > 0) {
+                                  flog += parameters[i] + ': ' + decode[i] + ", ";
+                                }
+                                if (i === parameters.length-1) {
+                                  flog = flog + ')'
+                                  flog = flog.replace(', )', ')')
+                                  console.log(flog, e.blockNumber)
+                                }
                               }
                             }
+                            })
                           }
                         }
                       })
