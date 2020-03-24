@@ -115,15 +115,6 @@ const Events = [
     }]  
   },
   {
-    code: "0x0be774851955c26a1d6a32b13b020663a069006b4a3b643ff0b809d318260572",
-    event: "Unlock(address)",
-    inputs: [{
-      type: 'address',
-      name: 'maker',
-      indexed : true
-    }]  
-  },
-  {
     code: "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
     event: "OwnershipTransferred(address, address)",
     inputs: [{
